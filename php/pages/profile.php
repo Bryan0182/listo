@@ -48,13 +48,16 @@ include 'php/template-parts/head.php';
                 <hr>
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Profiel bewerken</a>
+                        <a href="/profiel" class="nav-link active">Profiel</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/profiel/update" class="nav-link">Profiel bewerken</a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">Wachtwoord wijzigen</a>
                     </li>
                     <li class="nav-item">
-                        <a href="/php/functions/logout.php" class="nav-link">Uitloggen</a>
+                        <a href="/uitloggen" class="nav-link">Uitloggen</a>
                     </li>
                 </ul>
                 <hr>
@@ -63,7 +66,7 @@ include 'php/template-parts/head.php';
                        class="d-flex align-items-center text-white text-decoration-none dropdown-toggle profile-dropdown"
                        id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                         <?php if (!empty($profile_picture) && $profile_picture != '') : ?>
-                            <img src="<?php echo $profile_picture; ?>" alt="" width="32" height="32"
+                            <img src="/<?php echo $profile_picture; ?>" alt="" width="32" height="32"
                                  class="rounded-circle me-2">
                         <?php else : ?>
                             <img src="../../assets/images/user-solid.svg" alt="" width="32" height="32"
@@ -76,7 +79,7 @@ include 'php/template-parts/head.php';
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="/php/functions/logout.php">Uitloggen</a></li>
+                        <li><a class="dropdown-item" href="/uitloggen">Uitloggen</a></li>
                     </ul>
                 </div>
             </div>
@@ -87,7 +90,7 @@ include 'php/template-parts/head.php';
         <div class="col-md-9 p-3">
             <h1>Mijn profiel</h1>
             <p>Hier kunt u uw profielinformatie bekijken en bewerken.</p>
-            <img src="<?php echo $profile_picture; ?>" alt="Profielfoto <?php echo $username; ?>" width="100" height="100" class="mb-4">
+            <img src="/<?php echo $profile_picture; ?>" alt="Profielfoto <?php echo $username; ?>" width="100" height="100" class="mb-4">
             <p>Gebruikersnaam: <?php echo $username; ?></p>
             <p>E-mailadres: <?php echo $email; ?></p>
             <p>Voornaam: <?php echo $first_name; ?></p>
