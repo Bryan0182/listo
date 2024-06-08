@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const PHP_PATH = `${window.location.origin}/php/functions/`;
-    const categoryFromUrl = new URLSearchParams(window.location.search).get('category') || 'Alle taken';
+    let categoryFromUrl = new URLSearchParams(window.location.search).get('category') || 'Alle taken';
     fetchTasksByCategory(categoryFromUrl);
 
     document.querySelectorAll('.nav-link').forEach(item => {
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('h1').textContent = category;
 
             const newUrl = `${window.location.pathname}?category=${category}`;
-            window.history.pushState({ path: newUrl }, '', newUrl);
+            window.history.pushState({path: newUrl}, '', newUrl);
         });
     });
 
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ category: category })
+            body: JSON.stringify({category})
         })
             .then(response => response.json())
             .then(data => {
@@ -49,15 +49,15 @@ document.addEventListener('DOMContentLoaded', () => {
                             const listItem = document.createElement('li');
                             listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
                             listItem.innerHTML = `
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="${task.id}">
-                            <label class="form-check-label" for="${task.id}">
-                                <strong>${task.task}</strong><br>
-                                <span>${task.description}</span><br>
-                                <small>Deadline: ${formatDate(task.deadline)}</small>
-                            </label>
-                        </div>
-                    `;
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="${task.id}">
+                                    <label class="form-check-label" for="${task.id}">
+                                        <strong>${task.task}</strong><br>
+                                        <span>${task.description}</span><br>
+                                        <small>Deadline: ${formatDate(task.deadline)}</small>
+                                    </label>
+                                </div>
+                            `;
                             taskList.appendChild(listItem);
 
                             listItem.querySelector('.form-check-input').addEventListener('change', function () {
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateTaskStatus(taskId, completed) {
-        var params = new URLSearchParams();
+        const params = new URLSearchParams();
         params.append('taskId', taskId);
         params.append('completed', completed);
 
@@ -95,20 +95,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.getElementById('addTaskButton').addEventListener('click', function () {
-        var title = document.getElementById('taskTitle').value;
-        var description = document.getElementById('taskDescription').value;
-        var category = document.getElementById('taskCategory').value;
-        var deadline = document.getElementById('taskDeadline').value;
+        const title = document.getElementById('taskTitle').value;
+        const description = document.getElementById('taskDescription').value;
+        let category = document.getElementById('taskCategory').value;
+        const deadline = document.getElementById('taskDeadline').value;
 
-        // Controleer of er een categorie is geselecteerd of ingevoerd
         if (!category) {
-            // Als er geen categorie is geselecteerd of ingevoerd, krijg de waarde van het nieuwe categorie inputveld
-            var newCategory = document.getElementById('newCategory').value.trim();
+            const newCategory = document.getElementById('newCategory').value.trim();
             if (!newCategory) {
                 console.error('Geen categorie geselecteerd of ingevoerd.');
-                return; // Stop de functie als er geen categorie is geselecteerd of ingevoerd
+                return;
             }
-            // Geef de nieuwe categorie door aan het PHP-script
             category = newCategory;
         }
 
@@ -118,16 +115,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                title: title,
-                description: description,
-                category: category,
-                deadline: deadline
+                title,
+                description,
+                category,
+                deadline
             })
         })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    var modal = bootstrap.Modal.getInstance(document.getElementById('addTaskModal'));
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addTaskModal'));
                     modal.hide();
 
                     document.getElementById('addTaskForm').reset();
@@ -143,7 +140,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('openAddTaskModal').addEventListener('click', function () {
-        var currentCategory = document.querySelector('h1').textContent;
-        document.getElementById('taskCategory').value = currentCategory;
+        document.getElementById('taskCategory').value = document.querySelector('h1').textContent;
+    });
+
+    const newCategoryCheckbox = document.getElementById('newCategoryCheckbox');
+    const newCategoryInput = document.getElementById('newCategoryInput');
+
+    newCategoryCheckbox.addEventListener('change', function () {
+        if (this.checked) {
+            newCategoryInput.style.display = 'block';
+        } else {
+            newCategoryInput.style.display = 'none';
+        }
     });
 });
