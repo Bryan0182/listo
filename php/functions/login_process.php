@@ -28,6 +28,14 @@ if ($result->num_rows > 0) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
 
+        // Update de last_login tijd in de database
+        $user_id = $user['id'];
+        $update_sql = "UPDATE users SET last_login = NOW() WHERE id = '$user_id'";
+        if (!$connection->query($update_sql)) {
+            echo "Fout: " . $connection->error;
+            exit();
+        }
+
         // Redirect naar de homepage
         // Redirect naar de inlogpagina met een succesbericht
         $_SESSION['success_message'] = "Je bent succesvol ingelogd.";
@@ -36,13 +44,13 @@ if ($result->num_rows > 0) {
     } else {
         // Het wachtwoord is incorrect
         $_SESSION['error_message'] = "Fout: Het ingevoerde wachtwoord is incorrect.";
-        header("Location: ../../login.php");
+        header("Location: /inloggen");
         exit();
     }
 } else {
     // De gebruiker bestaat niet
     $_SESSION['error_message'] = "Fout: De ingevoerde gebruikersnaam bestaat niet.";
-    header("Location: ../../login.php");
+    header("Location: /inloggen");
     exit();
 }
 
