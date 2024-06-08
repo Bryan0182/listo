@@ -8,6 +8,6 @@ $_SESSION = array();
 session_destroy();
 
 // Redirect naar de inlogpagina of een andere gewenste pagina
-header("Location: ../pages/login.php");
+header("Location: /inloggen");
 exit();
 ?>
