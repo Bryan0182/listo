@@ -106,7 +106,7 @@ include 'php/template-parts/head.php';
                         <strong><?php echo $username; ?></strong>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                        <li><a class="dropdown-item" href="/profiel">Profie</a></li>
+                        <li><a class="dropdown-item" href="/profiel">Profiel</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
