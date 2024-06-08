@@ -1,3 +1,5 @@
+/* Start root variables */
+
 :root {
     --primary: #017580;
     --secondary: #71a3a4;
@@ -9,6 +11,8 @@
     --dark: #343A40;
 
 }
+
+/* End root variables */
 
 /* Start button primary */
 
@@ -38,6 +42,25 @@
 
 /* End button outline primary */
 
+/* Start logo */
+
+.logo span {
+    color: var(--dark);
+}
+
+/* End logo */
+
+/* Start horizontal line */
+
+hr {
+    border-top: 1px solid var(--dark);
+    width: 100%;
+}
+
+/* End horizontal line */
+
+/* Start nav pills */
+
 .nav-link {
     color: var(--dark);
 }
@@ -50,3 +73,33 @@
     background-color: var(--primary);
     color: var(--light);
 }
+
+/* End nav pills */
+
+/* Start profile */
+
+.profile-dropdown strong, .profile-dropdown::after {
+    color: var(--dark);
+}
+
+/* End profile */
+
+/* Start dark mode items */
+
+[data-bs-theme="dark"] hr {
+    border-top: 1px solid var(--light);
+}
+
+[data-bs-theme="dark"] .nav-link {
+    color: var(--light);
+}
+
+[data-bs-theme="dark"] .profile-dropdown strong, [data-bs-theme="dark"] .profile-dropdown::after {
+    color: var(--light);
+}
+
+[data-bs-theme="dark"] .logo span {
+    color: var(--light);
+}
+
+/* End dark mode items */
