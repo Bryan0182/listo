@@ -42,6 +42,31 @@ if ($target_file == '') {
     $target_file = '';
 }
 
+// Controleer of de gebruikersnaam al bestaat
+$sql = "SELECT id FROM users WHERE username = '$username'";
+$result = $connection->query($sql);
+
+if ($result->num_rows > 0) {
+    // Gebruikersnaam bestaat al, stuur gebruiker terug naar registratieformulier met melding
+    session_start();
+    $_SESSION['error_message'] = "De gebruikersnaam is al in gebruik.";
+    header("Location: /registreren");
+    exit();
+}
+
+// Controleer of het e-mailadres al bestaat
+$sql = "SELECT id FROM users WHERE email = '$email'";
+$result = $connection->query($sql);
+
+if ($result->num_rows > 0) {
+    // E-mailadres bestaat al, stuur gebruiker terug naar registratieformulier met melding
+    session_start();
+    $_SESSION['error_message'] = "Het e-mailadres is al in gebruik.";
+    header("Location: /registreren");
+    exit();
+}
+
+// Voer de query uit om de nieuwe gebruiker toe te voegen aan de database
 $sql = "INSERT INTO users (username, password, email, first_name, last_name, profile_picture, created_at) VALUES ('$username', '$hashed_password', '$email', '$first_name', '$last_name', '$target_file', NOW())";
 
 if ($connection->query($sql) === TRUE) {
@@ -61,3 +86,4 @@ if ($connection->query($sql) === TRUE) {
 }
 
 $connection->close();
+?>
