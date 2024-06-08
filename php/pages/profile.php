@@ -24,11 +24,13 @@ $row = $result->fetch_assoc();
 $profile_picture = $row['profile_picture'];
 
 // Haal de gebruikersgegevens op uit de database
-$sql = "SELECT username, email FROM users WHERE id = $user_id";
+$sql = "SELECT username, email, first_name, last_name FROM users WHERE id = $user_id";
 $result = $connection->query($sql);
 $row = $result->fetch_assoc();
 $username = $row['username'];
 $email = $row['email'];
+$first_name = $row['first_name'];
+$last_name = $row['last_name'];
 ?>
 <?php
 $pagetitle = "Profiel";
@@ -60,7 +62,7 @@ include 'php/template-parts/head.php';
                     <a href="#"
                        class="d-flex align-items-center text-white text-decoration-none dropdown-toggle profile-dropdown"
                        id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <?php if (!empty($profile_picture) && $profile_picture != 'assets/uploads/') : ?>
+                        <?php if (!empty($profile_picture) && $profile_picture != '') : ?>
                             <img src="<?php echo $profile_picture; ?>" alt="" width="32" height="32"
                                  class="rounded-circle me-2">
                         <?php else : ?>
@@ -86,8 +88,10 @@ include 'php/template-parts/head.php';
             <h1>Mijn profiel</h1>
             <p>Hier kunt u uw profielinformatie bekijken en bewerken.</p>
             <img src="<?php echo $profile_picture; ?>" alt="Profielfoto <?php echo $username; ?>" width="100" height="100" class="mb-4">
-            <p>Naam: <?php echo $username; ?></p>
-            <p>E-mail: <?php echo $email; ?></p>
+            <p>Gebruikersnaam: <?php echo $username; ?></p>
+            <p>E-mailadres: <?php echo $email; ?></p>
+            <p>Voornaam: <?php echo $first_name; ?></p>
+            <p>Achternaam: <?php echo $last_name; ?></p>
         </div>
     </div>
 </div>
