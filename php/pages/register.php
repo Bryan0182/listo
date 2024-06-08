@@ -1,12 +1,23 @@
 <?php
-$pagetitle="Registreren";
+$pagetitle = "Registreren";
 include 'php/template-parts/head.php';
 include 'php/template-parts/header.php';
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 ?>
 
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
+            <?php
+            if (isset($_SESSION['error_message'])) {
+                $error_message = $_SESSION['error_message'];
+                echo "<div class='alert alert-danger'>$error_message</div>";
+                unset($_SESSION['error_message']);
+            }
+            ?>
             <h2 class="text-center">Registreren</h2>
             <form action="/registreren" method="post" enctype="multipart/form-data">
                 <div class="mb-3">
