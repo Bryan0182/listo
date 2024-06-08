@@ -2,7 +2,7 @@
 $request = $_SERVER['REQUEST_URI'];
 
 $urlComponents = parse_url($request);
-$path = pathinfo($urlComponents['path'], PATHINFO_FILENAME); // Verwijder de .php extensie
+$path = trim($urlComponents['path'], '/'); // Verwijder leidende en sluitende slashes
 
 if (isset($urlComponents['query'])) {
     parse_str($urlComponents['query'], $params);
@@ -10,7 +10,6 @@ if (isset($urlComponents['query'])) {
         require __DIR__ . '/php/pages/dashboard.php';
     } else {
         switch ($path) {
-            case '/' :
             case '' :
                 require __DIR__ . '/php/pages/home.php';
                 break;
@@ -34,6 +33,16 @@ if (isset($urlComponents['query'])) {
             case 'profiel' :
                 require __DIR__ . '/php/pages/profile.php';
                 break;
+            case 'profiel/update' :
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    include __DIR__ . '/php/functions/update_profile_process.php';
+                } else {
+                    require __DIR__ . '/php/pages/profile_update.php';
+                }
+                break;
+            case 'uitloggen' :
+                include __DIR__ . '/php/functions/logout.php';
+                break;
             default:
                 http_response_code(404);
                 require __DIR__ . '/php/pages/404.php';
@@ -42,7 +51,6 @@ if (isset($urlComponents['query'])) {
     }
 } else {
     switch ($path) {
-        case '/' :
         case '' :
             require __DIR__ . '/php/pages/home.php';
             break;
@@ -66,9 +74,20 @@ if (isset($urlComponents['query'])) {
         case 'profiel' :
             require __DIR__ . '/php/pages/profile.php';
             break;
+        case 'profiel/update' :
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                include __DIR__ . '/php/functions/update_profile_process.php';
+            } else {
+                require __DIR__ . '/php/pages/profile_update.php';
+            }
+            break;
+        case 'uitloggen' :
+            include __DIR__ . '/php/functions/logout.php';
+            break;
         default:
             http_response_code(404);
             require __DIR__ . '/php/pages/404.php';
             break;
     }
 }
+?>
