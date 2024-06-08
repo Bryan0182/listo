@@ -8,7 +8,7 @@ include 'php/template-parts/header.php';
     <div class="row justify-content-center">
         <div class="col-md-6">
             <h2 class="text-center">Registreren</h2>
-            <form action="php/functions/register_process.php" method="post" enctype="multipart/form-data">
+            <form action="../functions/register_process.php" method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="username" class="form-label">Gebruikersnaam</label>
                     <input type="text" class="form-control" id="username" name="username" required>
@@ -30,3 +30,7 @@ include 'php/template-parts/header.php';
         </div>
     </div>
 </div>
+
+<?php
+include 'php/template-parts/footer.php';
+?>

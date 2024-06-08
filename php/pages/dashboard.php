@@ -43,20 +43,20 @@ $sqlCategories = "SELECT DISTINCT category FROM tasks WHERE category IS NOT NULL
 $resultCategories = $connection->query($sqlCategories);
 ?>
 <?php
-$pagetitle="Home";
+$pagetitle = "Home";
 include 'php/template-parts/head.php';
 ?>
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-2">
-            <div class="d-flex flex-column flex-shrink-0 p-3" style="width: 280px; height: 100vh;">
-                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-                    <img src="assets/images/listo-logo-small.webp" width="40" height="40">
-                    <span class="fs-4">Listo</span>
+    <div class="row flex-nowrap">
+        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 sidebar">
+            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
+                <a href="/" class="d-flex align-items-center text-decoration-none logo">
+                    <img src="../../assets/images/listo-logo-small.webp" width="40" height="40" alt="Listo Logo">
+                    <span class="fs-5 d-none d-sm-inline">Listo</span>
                 </a>
                 <hr>
-                <ul class="nav nav-pills flex-column mb-auto">
+                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li class="nav-item">
                         <a href="?category=Alle taken"
                            class="nav-link <?php echo ($currentCategory == 'Alle taken') ? 'active' : ''; ?>"
@@ -92,13 +92,16 @@ include 'php/template-parts/head.php';
                     <?php endif; ?>
                 </ul>
                 <hr>
-                <div class="dropdown">
-                    <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
+                <div class="dropdown pb-3">
+                    <a href="#"
+                       class="d-flex align-items-center text-white text-decoration-none dropdown-toggle profile-dropdown"
                        id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                         <?php if (!empty($profile_picture) && $profile_picture != 'assets/uploads/') : ?>
-                            <img src="<?php echo $profile_picture; ?>" alt="" width="32" height="32" class="rounded-circle me-2">
+                            <img src="<?php echo $profile_picture; ?>" alt="" width="32" height="32"
+                                 class="rounded-circle me-2">
                         <?php else : ?>
-                            <img src="assets/images/user-solid.svg" alt="" width="32" height="32" class="rounded-circle me-2">
+                            <img src="../../assets/images/user-solid.svg" alt="" width="32" height="32"
+                                 class="rounded-circle me-2">
                         <?php endif; ?>
                         <strong><?php echo $username; ?></strong>
                     </a>
@@ -114,7 +117,9 @@ include 'php/template-parts/head.php';
                 </div>
             </div>
         </div>
+        <!-- Einde van de nieuwe sidebar -->
 
+        <!-- Hier komt de rest van je huidige inhoud -->
         <div class="col-md-10 p-3">
             <div class="row">
                 <div class="col">
@@ -122,8 +127,13 @@ include 'php/template-parts/head.php';
                 </div>
                 <div class="col text-end">
                     <button id="openAddTaskModal" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#addTaskModal">
+                            data-bs-target
+                            ="#addTaskModal">
                         Taak toevoegen
+                    </button>
+                    <button class="btn btn-primary" id="btnSwitch">
+                        <img src="../../assets/images/circle-half-stroke-solid.svg" width="20px" height="20px"
+                             alt="Icon"/>
                     </button>
                 </div>
             </div>
@@ -136,7 +146,10 @@ include 'php/template-parts/head.php';
                                 <label class="form-check-label" for="<?php echo $rowTask['id']; ?>">
                                     <strong><?php echo $rowTask['task']; ?></strong><br>
                                     <span><?php echo $rowTask['description']; ?></span><br>
-                                    <small>Deadline: <?php echo (new DateTime($rowTask['deadline']))->format('d-m-Y'); ?></small>
+                                    <small>Deadline: <?php try {
+                                            echo (new DateTime($rowTask['deadline']))->format('d-m-Y');
+                                        } catch (Exception $e) {
+                                        } ?></small>
                                 </label>
                             </div>
                         </li>
@@ -174,7 +187,7 @@ include 'php/template-parts/head.php';
                             <?php
                             // Voeg hier de code toe om $userCategories op te halen
                             session_start(); // Start de sessie
-                            include 'database.php';
+                            include 'php/functions/database.php';
 
                             // Controleer of de gebruiker is ingelogd
                             if (!isset($_SESSION['user_id'])) {
@@ -225,26 +238,4 @@ include 'php/template-parts/head.php';
     </div>
 </div>
 
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const newCategoryCheckbox = document.getElementById('newCategoryCheckbox');
-        const newCategoryInput = document.getElementById('newCategoryInput');
-
-        // Luister naar wijzigingen in de checkbox
-        newCategoryCheckbox.addEventListener('change', function () {
-            // Toon/verberg het inputveld afhankelijk van de checkbox status
-            if (this.checked) {
-                newCategoryInput.style.display = 'block';
-            } else {
-                newCategoryInput.style.display = 'none';
-            }
-        });
-    });
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
-<script src="assets/javascript/scripts.js"></script>
-</body>
-</html>
+<?php include 'php/template-parts/footer.php'; ?>
