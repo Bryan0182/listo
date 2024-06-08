@@ -8,7 +8,7 @@ include 'php/template-parts/header.php';
     <div class="row justify-content-center">
         <div class="col-md-6">
             <h2 class="text-center">Registreren</h2>
-            <form action="../functions/register_process.php" method="post" enctype="multipart/form-data">
+            <form action="/registreren" method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="username" class="form-label">Gebruikersnaam</label>
                     <input type="text" class="form-control" id="username" name="username" required>
@@ -18,8 +18,16 @@ include 'php/template-parts/header.php';
                     <input type="password" class="form-control" id="password" name="password" required>
                 </div>
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
+                    <label for="email" class="form-label">E-mailadres</label>
                     <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="first_name" class="form-label">Voornaam</label>
+                    <input type="text" class="form-control" id="first_name" name="first_name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="last_name" class="form-label">Achternaam</label>
+                    <input type="text" class="form-control" id="last_name" name="last_name" required>
                 </div>
                 <div class="mb-3">
                     <label for="profile_picture" class="form-label">Profielfoto</label>
