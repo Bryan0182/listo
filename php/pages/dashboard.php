@@ -97,7 +97,7 @@ include 'php/template-parts/head.php';
                        class="d-flex align-items-center text-white text-decoration-none dropdown-toggle profile-dropdown"
                        id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                         <?php if (!empty($profile_picture) && $profile_picture != '') : ?>
-                            <img src="<?php echo $profile_picture; ?>" alt="" width="32" height="32"
+                            <img src="/<?php echo $profile_picture; ?>" alt="" width="32" height="32"
                                  class="rounded-circle me-2">
                         <?php else : ?>
                             <img src="../../assets/images/user-solid.svg" alt="" width="32" height="32"
@@ -110,7 +110,7 @@ include 'php/template-parts/head.php';
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="/php/functions/logout.php">Uitloggen</a></li>
+                        <li><a class="dropdown-item" href="/uitloggen">Uitloggen</a></li>
                     </ul>
                 </div>
             </div>
