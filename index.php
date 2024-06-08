@@ -25,7 +25,11 @@ if (isset($urlComponents['query'])) {
                 }
                 break;
             case 'registreren' :
-                require __DIR__ . '/php/pages/register.php';
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    include __DIR__ . '/php/functions/register_process.php';
+                } else {
+                    require __DIR__ . '/php/pages/register.php';
+                }
                 break;
             case 'profiel' :
                 require __DIR__ . '/php/pages/profile.php';
@@ -53,7 +57,11 @@ if (isset($urlComponents['query'])) {
             }
             break;
         case 'registreren' :
-            require __DIR__ . '/php/pages/register.php';
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                include __DIR__ . '/php/functions/register_process.php';
+            } else {
+                require __DIR__ . '/php/pages/register.php';
+            }
             break;
         case 'profiel' :
             require __DIR__ . '/php/pages/profile.php';
