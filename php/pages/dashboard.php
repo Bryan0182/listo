@@ -96,7 +96,7 @@ include 'php/template-parts/head.php';
                     <a href="#"
                        class="d-flex align-items-center text-white text-decoration-none dropdown-toggle profile-dropdown"
                        id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <?php if (!empty($profile_picture) && $profile_picture != 'assets/uploads/') : ?>
+                        <?php if (!empty($profile_picture) && $profile_picture != '') : ?>
                             <img src="<?php echo $profile_picture; ?>" alt="" width="32" height="32"
                                  class="rounded-circle me-2">
                         <?php else : ?>
