@@ -3,13 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let categoryFromUrl = new URLSearchParams(window.location.search).get('category') || 'Alle taken';
     fetchTasksByCategory(categoryFromUrl);
 
-    document.querySelectorAll('.nav-link').forEach(item => {
+    document.querySelectorAll('.nav-link-category').forEach(item => {
         item.addEventListener('click', event => {
             event.preventDefault();
             const category = event.target.getAttribute('data-category');
             fetchTasksByCategory(category);
 
-            document.querySelectorAll('.nav-link').forEach(link => {
+            document.querySelectorAll('.nav-link-category').forEach(link => {
                 link.classList.remove('active');
             });
             event.target.classList.add('active');
