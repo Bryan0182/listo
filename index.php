@@ -27,6 +27,9 @@ if (isset($urlComponents['query'])) {
             case 'registreren' :
                 require __DIR__ . '/php/pages/register.php';
                 break;
+            case 'profiel' :
+                require __DIR__ . '/php/pages/profile.php';
+                break;
             default:
                 http_response_code(404);
                 require __DIR__ . '/php/pages/404.php';
@@ -51,6 +54,9 @@ if (isset($urlComponents['query'])) {
             break;
         case 'registreren' :
             require __DIR__ . '/php/pages/register.php';
+            break;
+        case 'profiel' :
+            require __DIR__ . '/php/pages/profile.php';
             break;
         default:
             http_response_code(404);
