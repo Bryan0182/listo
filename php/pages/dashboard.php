@@ -59,7 +59,7 @@ include 'php/template-parts/head.php';
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li class="nav-item">
                         <a href="?category=Alle taken"
-                           class="nav-link <?php echo ($currentCategory == 'Alle taken') ? 'active' : ''; ?>"
+                           class="nav-link nav-link-category <?php echo ($currentCategory == 'Alle taken') ? 'active' : ''; ?>"
                            data-category="Alle taken">
                             Alle taken
                         </a>
@@ -79,7 +79,7 @@ include 'php/template-parts/head.php';
                         <?php while ($rowCategory = $resultCategories->fetch_assoc()): ?>
                             <li class="nav-item">
                                 <a href="?category=<?php echo $rowCategory['category']; ?>"
-                                   class="nav-link <?php echo ($currentCategory == $rowCategory['category']) ? 'active' : ''; ?>"
+                                   class="nav-link nav-link-category <?php echo ($currentCategory == $rowCategory['category']) ? 'active' : ''; ?>"
                                    data-category="<?php echo $rowCategory['category']; ?>">
                                     <?php echo $rowCategory['category']; ?>
                                 </a>
@@ -87,7 +87,7 @@ include 'php/template-parts/head.php';
                         <?php endwhile; ?>
                     <?php else: ?>
                         <li class="nav-item">
-                            <span class="nav-link">Geen categorieën gevonden</span>
+                            <span class="nav-link nav-link-category">Geen categorieën gevonden</span>
                         </li>
                     <?php endif; ?>
                 </ul>
@@ -106,9 +106,7 @@ include 'php/template-parts/head.php';
                         <strong><?php echo $username; ?></strong>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                        <li><a class="dropdown-item" href="#">New project...</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="/profiel">Profiel</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
