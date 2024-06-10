@@ -1,7 +1,9 @@
 <?php
-session_start();
-
 include 'php/functions/database.php';
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 if (!isset($connection)) {
     echo "Fout: Databaseverbinding is niet ingesteld.";
@@ -54,7 +56,7 @@ include 'php/template-parts/head.php';
                         <a href="/profiel/update" class="nav-link">Profiel bewerken</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Wachtwoord wijzigen</a>
+                        <a href="/profiel/wachtwoord" class="nav-link">Wachtwoord wijzigen</a>
                     </li>
                     <li class="nav-item">
                         <a href="/uitloggen" class="nav-link">Uitloggen</a>
@@ -90,6 +92,19 @@ include 'php/template-parts/head.php';
         <div class="col-md-9 p-3">
             <h1>Mijn profiel</h1>
             <p>Hier kunt u uw profielinformatie bekijken en bewerken.</p>
+            <?php
+            if (isset($_SESSION['success_message'])) {
+                echo '<div class="alert alert-success">' . $_SESSION['success_message'] . '</div>';
+
+                unset($_SESSION['success_message']);
+            }
+
+            if (isset($_SESSION['error_message'])) {
+                echo '<div class="alert alert-danger">' . $_SESSION['error_message'] . '</div>';
+
+                unset($_SESSION['error_message']);
+            }
+            ?>
             <img src="/<?php echo $profile_picture; ?>" alt="Profielfoto <?php echo $username; ?>" width="100" height="100" class="mb-4">
             <p>Gebruikersnaam: <?php echo $username; ?></p>
             <p>E-mailadres: <?php echo $email; ?></p>
