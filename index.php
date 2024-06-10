@@ -40,6 +40,13 @@ if (isset($urlComponents['query'])) {
                     require __DIR__ . '/php/pages/profile_update.php';
                 }
                 break;
+            case 'profiel/wachtwoord' :
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    include __DIR__ . '/php/functions/update_password_process.php';
+                } else {
+                    require __DIR__ . '/php/pages/password_update.php';
+                }
+                break;
             case 'uitloggen' :
                 include __DIR__ . '/php/functions/logout.php';
                 break;
@@ -79,6 +86,13 @@ if (isset($urlComponents['query'])) {
                 include __DIR__ . '/php/functions/update_profile_process.php';
             } else {
                 require __DIR__ . '/php/pages/profile_update.php';
+            }
+            break;
+        case 'profiel/wachtwoord' :
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                include __DIR__ . '/php/functions/update_password_process.php';
+            } else {
+                require __DIR__ . '/php/pages/password_update.php';
             }
             break;
         case 'uitloggen' :
