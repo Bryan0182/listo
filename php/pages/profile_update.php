@@ -54,7 +54,7 @@ include 'php/template-parts/head.php';
                         <a href="" class="nav-link active">Profiel bewerken</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Wachtwoord wijzigen</a>
+                        <a href="/profiel/wachtwoord" class="nav-link">Wachtwoord wijzigen</a>
                     </li>
                     <li class="nav-item">
                         <a href="/uitloggen" class="nav-link">Uitloggen</a>
@@ -88,7 +88,7 @@ include 'php/template-parts/head.php';
 
         <!-- Hier komt de rest van je huidige inhoud -->
         <div class="col-md-9 p-3">
-            <h1>Mijn profiel</h1>
+            <h1>Profiel bijwerken</h1>
             <p>Hier kunt u uw profielinformatie bekijken en bewerken.</p>
             <form action="/profiel/update" method="POST" enctype="multipart/form-data">
                 <div class="mb-3">
