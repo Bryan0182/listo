@@ -43,7 +43,7 @@ include 'php/template-parts/head.php';
     <div class="row flex-nowrap">
         <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 sidebar">
             <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
-                <a href="/" class="d-flex align-items-center text-decoration-none logo">
+                <a href="/dashboard" class="d-flex align-items-center text-decoration-none logo">
                     <img src="/assets/images/listo-logo-small.webp" width="40" height="40" alt="Listo Logo">
                     <span class="fs-5 d-none d-sm-inline">Listo</span>
                 </a>
