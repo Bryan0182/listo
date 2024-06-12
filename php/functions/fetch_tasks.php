@@ -1,5 +1,5 @@
 <?php
-session_start(); // Start de sessie
+session_start();
 include 'database.php';
 
 if (!isset($connection)) {
@@ -7,13 +7,12 @@ if (!isset($connection)) {
     exit();
 }
 
-// Controleer of de gebruiker is ingelogd
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'error' => 'Gebruiker niet ingelogd.']);
     exit();
 }
 
-$user_id = $_SESSION['user_id']; // Haal het ingelogde gebruikers-ID op
+$user_id = $_SESSION['user_id'];
 
 $input = json_decode(file_get_contents('php://input'), true);
 $category = $input['category'];

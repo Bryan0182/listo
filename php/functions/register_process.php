@@ -8,11 +8,11 @@ if (!isset($connection)) {
 }
 
 // De gegevens van het formulier ophalen
-$username = $connection->real_escape_string($_POST['username']);
-$password = $connection->real_escape_string($_POST['password']);
-$email = $connection->real_escape_string($_POST['email']);
-$first_name = $connection->real_escape_string($_POST['first_name']);
-$last_name = $connection->real_escape_string($_POST['last_name']);
+$username = $_POST['username'];
+$password = $_POST['password'];
+$email = $_POST['email'];
+$first_name = $_POST['first_name'];
+$last_name = $_POST['last_name'];
 
 // Het wachtwoord hashen
 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
@@ -42,9 +42,11 @@ if ($target_file == '') {
     $target_file = '';
 }
 
-// Controleer of de gebruikersnaam al bestaat
-$sql = "SELECT id FROM users WHERE username = '$username'";
-$result = $connection->query($sql);
+// Controleer of de gebruikersnaam al bestaat met een prepared statement
+$stmt = $connection->prepare("SELECT id FROM users WHERE username = ?");
+$stmt->bind_param("s", $username);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     // Gebruikersnaam bestaat al, stuur gebruiker terug naar registratieformulier met melding
@@ -54,9 +56,11 @@ if ($result->num_rows > 0) {
     exit();
 }
 
-// Controleer of het e-mailadres al bestaat
-$sql = "SELECT id FROM users WHERE email = '$email'";
-$result = $connection->query($sql);
+// Controleer of het e-mailadres al bestaat met een prepared statement
+$stmt = $connection->prepare("SELECT id FROM users WHERE email = ?");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     // E-mailadres bestaat al, stuur gebruiker terug naar registratieformulier met melding
@@ -66,10 +70,12 @@ if ($result->num_rows > 0) {
     exit();
 }
 
-// Voer de query uit om de nieuwe gebruiker toe te voegen aan de database
-$sql = "INSERT INTO users (username, password, email, first_name, last_name, profile_picture, created_at) VALUES ('$username', '$hashed_password', '$email', '$first_name', '$last_name', '$target_file', NOW())";
+// Voer de query uit om de nieuwe gebruiker toe te voegen aan de database met een prepared statement
+$stmt = $connection->prepare("INSERT INTO users (username, password, email, first_name, last_name, profile_picture, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())");
+$stmt->bind_param("ssssss", $username, $hashed_password, $email, $first_name, $last_name, $target_file);
+$stmt->execute();
 
-if ($connection->query($sql) === TRUE) {
+if ($stmt->affected_rows === 1) {
     // Start de sessie als deze nog niet is gestart
     if (session_status() == PHP_SESSION_NONE) {
         session_start();
@@ -82,8 +88,9 @@ if ($connection->query($sql) === TRUE) {
     header("Location: /inloggen");
     exit();
 } else {
-    echo "Fout: " . $sql . "<br>" . $connection->error;
+    echo "Fout: " . $connection->error;
 }
 
+$stmt->close();
 $connection->close();
 ?>

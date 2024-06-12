@@ -8,8 +8,9 @@ if (!isset($connection)) {
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
-    $sql = "DELETE FROM tasks WHERE id=$id";
-    $connection->query($sql);
+    $stmt = $connection->prepare("DELETE FROM tasks WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
 }
 
 header('Location: dashboard.php');

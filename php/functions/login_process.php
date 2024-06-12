@@ -6,13 +6,20 @@ if (!isset($connection)) {
     exit();
 }
 
-// De gegevens van het formulier ophalen
-$username = $connection->real_escape_string($_POST['username']);
-$password = $connection->real_escape_string($_POST['password']);
+// Start de sessie als deze nog niet is gestart
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
-// Zoek de gebruiker in de database
-$sql = "SELECT * FROM users WHERE username = '$username'";
-$result = $connection->query($sql);
+// De gegevens van het formulier ophalen
+$username = $_POST['username'];
+$password = $_POST['password'];
+
+// Zoek de gebruiker in de database met een prepared statement
+$stmt = $connection->prepare("SELECT * FROM users WHERE username = ?");
+$stmt->bind_param("s", $username);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     // De gebruiker bestaat, controleer het wachtwoord
@@ -20,21 +27,16 @@ if ($result->num_rows > 0) {
 
     if (password_verify($password, $user['password'])) {
         // Het wachtwoord is correct, start de sessie
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-
         // Sla de gebruikersgegevens op in de sessie
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
 
         // Update de last_login tijd in de database
         $user_id = $user['id'];
-        $update_sql = "UPDATE users SET last_login = NOW() WHERE id = '$user_id'";
-        if (!$connection->query($update_sql)) {
-            echo "Fout: " . $connection->error;
-            exit();
-        }
+        $update_sql = "UPDATE users SET last_login = NOW() WHERE id = ?";
+        $update_stmt = $connection->prepare($update_sql);
+        $update_stmt->bind_param("i", $user_id);
+        $update_stmt->execute();
 
         // Redirect naar de homepage
         // Redirect naar de inlogpagina met een succesbericht
@@ -54,5 +56,6 @@ if ($result->num_rows > 0) {
     exit();
 }
 
+$stmt->close();
 $connection->close();
 ?>

@@ -19,9 +19,9 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 // De gegevens van het formulier ophalen
-$current_password = $connection->real_escape_string($_POST['current_password']);
-$new_password = $connection->real_escape_string($_POST['new_password']);
-$confirm_password = $connection->real_escape_string($_POST['confirm_password']);
+$current_password = $_POST['current_password'];
+$new_password = $_POST['new_password'];
+$confirm_password = $_POST['confirm_password'];
 
 // Controleer of het nieuwe wachtwoord en het bevestigde wachtwoord overeenkomen
 if ($new_password !== $confirm_password) {
@@ -30,9 +30,11 @@ if ($new_password !== $confirm_password) {
     exit();
 }
 
-// Haal het huidige wachtwoord van de gebruiker op uit de database
-$sql = "SELECT password FROM users WHERE id = $user_id";
-$result = $connection->query($sql);
+// Haal het huidige wachtwoord van de gebruiker op uit de database met een prepared statement
+$stmt = $connection->prepare("SELECT password FROM users WHERE id = ?");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result->num_rows === 1) {
     $row = $result->fetch_assoc();
@@ -43,17 +45,19 @@ if ($result->num_rows === 1) {
         // Versleutel het nieuwe wachtwoord
         $hashed_new_password = password_hash($new_password, PASSWORD_DEFAULT);
 
-        // Update query om het nieuwe wachtwoord op te slaan
-        $update_sql = "UPDATE users SET password = '$hashed_new_password' WHERE id = $user_id";
+        // Update query om het nieuwe wachtwoord op te slaan met een prepared statement
+        $update_stmt = $connection->prepare("UPDATE users SET password = ? WHERE id = ?");
+        $update_stmt->bind_param("si", $hashed_new_password, $user_id);
+        $update_stmt->execute();
 
-        // Voer de update query uit
-        if ($connection->query($update_sql) === TRUE) {
+        // Controleer of de update succesvol was
+        if ($update_stmt->affected_rows === 1) {
             // Succesbericht opslaan in sessie
             $_SESSION['success_message'] = "Wachtwoord succesvol bijgewerkt.";
             header("Location: /profiel");
             exit();
         } else {
-            echo "Fout: " . $update_sql . "<br>" . $connection->error;
+            echo "Fout: " . $connection->error;
         }
     } else {
         $_SESSION['error_message'] = "Het huidige wachtwoord is onjuist.";
@@ -64,5 +68,6 @@ if ($result->num_rows === 1) {
     echo "Gebruiker niet gevonden.";
 }
 
+$stmt->close();
 $connection->close();
 ?>

@@ -19,10 +19,10 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 // De gegevens van het formulier ophalen
-$username = $connection->real_escape_string($_POST['username']);
-$email = $connection->real_escape_string($_POST['email']);
-$first_name = $connection->real_escape_string($_POST['first_name']);
-$last_name = $connection->real_escape_string($_POST['last_name']);
+$username = $_POST['username'];
+$email = $_POST['email'];
+$first_name = $_POST['first_name'];
+$last_name = $_POST['last_name'];
 
 // Profielfoto uploaden als er een bestand is geselecteerd
 if (!empty($_FILES['profile_picture']['name'])) {
@@ -37,26 +37,31 @@ if (!empty($_FILES['profile_picture']['name'])) {
     if (move_uploaded_file($profile_picture["tmp_name"], $target_file)) {
         // Profielfoto pad opslaan
         $profile_picture_path = $target_file;
-        // Update query inclusief profielfoto
-        $sql = "UPDATE users SET username = '$username', email = '$email', first_name = '$first_name', last_name = '$last_name', profile_picture = '$profile_picture_path' WHERE id = $user_id";
+        // Update query inclusief profielfoto met een prepared statement
+        $stmt = $connection->prepare("UPDATE users SET username = ?, email = ?, first_name = ?, last_name = ?, profile_picture = ? WHERE id = ?");
+        $stmt->bind_param("sssssi", $username, $email, $first_name, $last_name, $profile_picture_path, $user_id);
+        $stmt->execute();
     } else {
         echo "Er is een fout opgetreden bij het uploaden van je bestand.";
         exit();
     }
 } else {
-    // Update query zonder profielfoto
-    $sql = "UPDATE users SET username = '$username', email = '$email', first_name = '$first_name', last_name = '$last_name' WHERE id = $user_id";
+    // Update query zonder profielfoto met een prepared statement
+    $stmt = $connection->prepare("UPDATE users SET username = ?, email = ?, first_name = ?, last_name = ? WHERE id = ?");
+    $stmt->bind_param("ssssi", $username, $email, $first_name, $last_name, $user_id);
+    $stmt->execute();
 }
 
-// Voer de update query uit
-if ($connection->query($sql) === TRUE) {
+// Controleer of de update succesvol was
+if ($stmt->affected_rows === 1) {
     // Succesbericht opslaan in sessie
     $_SESSION['success_message'] = "Profiel succesvol bijgewerkt.";
     header("Location: /profiel");
     exit();
 } else {
-    echo "Fout: " . $sql . "<br>" . $connection->error;
+    echo "Fout: " . $connection->error;
 }
 
+$stmt->close();
 $connection->close();
 ?>
